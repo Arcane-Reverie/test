@@ -1,0 +1,35 @@
+// Define the pin for the relay
+const int relayPin = 7;
+
+// Updated timing values (1 minute watering, 30 minute interval)
+const unsigned long wateringDuration = 60000;   // 1 minute (60,000 ms)
+const unsigned long wateringInterval = 1800000; // 30 minutes (1,800,000 ms)
+
+// Variables to keep track of time
+unsigned long previousMillis = 0;
+bool isWatering = false;
+
+void setup() {
+  // Initialize the relay pin as an output
+  pinMode(relayPin, OUTPUT);
+  // Start with the relay off
+  digitalWrite(relayPin, LOW);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // Check if it's time to water
+  if (currentMillis - previousMillis >= wateringInterval) {
+    previousMillis = currentMillis;
+
+    // Start watering
+    if (!isWatering) {
+      digitalWrite(relayPin, HIGH); // Turn on the pump
+      isWatering = true;
+      delay(wateringDuration);      // Water for 1 minute
+      digitalWrite(relayPin, LOW);  // Turn off the pump
+      isWatering = false;
+    }
+  }
+}
