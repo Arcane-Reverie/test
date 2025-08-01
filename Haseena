@@ -1,0 +1,26 @@
+#include <Servo.h>
+
+Servo myServo;  // Create a Servo object
+const int rainDropPin = 2;  // Pin connected to the rain-drop module
+const int servoPin = 9;      // Pin connected to the servo motor
+
+void setup() {
+  myServo.attach(servoPin);  // Attach the servo to the specified pin
+  pinMode(rainDropPin, INPUT);  // Set the rain-drop pin as input
+  Serial.begin(9600);  // Start serial communication for debugging
+}
+
+void loop() {
+  int rainDropValue = digitalRead(rainDropPin);  // Read the rain-drop module value
+
+  if (rainDropValue == LOW) {  // If rain is detected (LOW signal)
+    Serial.println("Rain detected! Moving servo.");
+    myServo.write(90);  // Move servo to 90 degrees
+    delay(2000);        // Wait for 2 seconds
+    myServo.write(0);   // Move servo back to 0 degrees
+  } else {
+    Serial.println("No rain detected.");
+  }
+
+  delay(500);  // Delay for stability
+}
